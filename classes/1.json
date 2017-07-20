@@ -1,0 +1,16 @@
+{
+	"name": "Rogue",
+	"hit_die": [2,5],
+	"attack_bonus": {
+		"2": 1,
+		"4": 2,
+		"7": 3,
+		"10": 4
+	},
+	"start_ap": 28,
+	"skills": ["hide"],
+	"modifiers": {
+		"dex": 2,
+		"def": -1
+	}
+}
