@@ -1,4 +1,4 @@
 from .Class import Class
 from .combat import Combat
-from .equipment import Equipment
+from .item import load_item
 from .player import Player

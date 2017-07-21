@@ -12,6 +12,7 @@ class Class:
 		self.load = load_class(id)
 		self.level = level
 		self.name = self.load['name']
+		self.starting_ap = self.load['start_ap']
 		
 	@property
 	def hit_die(self):

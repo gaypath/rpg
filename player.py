@@ -1,14 +1,19 @@
 import asyncio, asyncpg
 from .Class import Class
+from .item import load_item, Equipment
 
 class Player:
 	
 	__slots__ = (
-		'member', 'pool', 'level',
+		'member', 'pool',
+		'level', '_Class', 'max_health', 'max_mana',
 		'str_', 'dex', 'int_', 'wis', 'luk', 'cha',
+		'_weapon', 'shield'
 	)
-
-	EXTERNAL = ('member', 'pool', 'level')
+	
+	EXTERNAL = ('member', 'pool')
+	
+	EQUIPS = ('_weapon', 'shield')
 	
 	# RW = 20
 	# F = 5
@@ -40,29 +45,58 @@ class Player:
 		self.level = member.localLevel
 		
 		for slot in self.__slots__:
-			if slot not in self.EXTERNAL:
+			if slot not in self.EXTERNAL and slot not in self.EQUIPS and slot != '_Class':
 				data = await self.member.getRPGStats(slot)
 				
 				setattr(self, slot, data[0])
 			
+			
+		self.Class = 1
+		
+		equips = await self.member.getRPGEquipment(wearing = True)
+		
+		if equips:
+			for equip in equips:
+				await self.set_equip(equips[equip])
+			
 		return self
+	
+	async def equip(self, item, item_id):
+		await self.member.setRPGEquipment(item_id, item.type)
+	
+	async def set_equip(self, item):
+		equip = Equipment(dict(item[1]))
+		
+		{
+			'1': setattr(self, 'weapon', equip),
+		}.get(str(equip.type))
+		
+		print(self.weapon)
+		
+		self.str_ += equip.str_	
+		self.dex += equip.dex	
+		self.int_ += equip.int_
+		self.cha += equip.cha
+		
+	def take_damage(self, damage):
+		self.rw = self.rw - damage
+		
+	@property
+	def Class(self):
+		return self._Class
+		
+	@Class.setter
+	def Class(self, val):
+		self._Class = val
+	
+	@property
+	def weapon(self):
+		return self._weapon
+	
+	@weapon.setter
+	def weapon(self, val):
+		self._weapon = val
 		
 	@property
 	def att(self):
 		pass
-	
-	def equip(self, item):
-		{
-			'weapon': setattr(self, 'weapon', item),
-			'shield': setattr(self, 'shield', item),
-		}.get(item.type)
-		
-		self.att += item.att
-		self.st += item.st
-		self.str_ += item.str_	
-		self.dex += item.dex	
-		self.int_ += item.int_
-		self.cha += item.cha
-		
-	def take_damage(self, damage):
-		self.rw = self.rw - damage
