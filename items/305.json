@@ -1,0 +1,15 @@
+{
+    "id": 305,
+    "name": "Greasy Fez",
+	"item_type": 1,
+    "type": 3,
+    "weight": 0,
+    "att": 1,
+    "def": 0,
+    "str_": 0,
+    "dex": 1,
+    "int_": 0,
+    "luk": 0,
+    "cha": 0,
+    "upgrade_slots": 0
+}

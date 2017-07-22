@@ -1,0 +1,15 @@
+{
+    "id": 3,
+    "name": "Yum Dildo of Destruction",
+    "item_type": 1,
+    "type": 1,
+    "weight": 1,
+    "att": 3,
+    "def": 0,
+    "str": 0,
+    "dex": 0,
+    "int": 0,
+    "luk": 0,
+    "cha": 0,
+    "upgrade_slots": 5
+}

@@ -11,6 +11,6 @@
 	"skills": ["hide"],
 	"modifiers": {
 		"dex": 2,
-		"def": -1
+		"def_": -1
 	}
 }

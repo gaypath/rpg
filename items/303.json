@@ -1,0 +1,15 @@
+{
+    "id": 303,
+    "name": "Balaclava of Peace",
+	"item_type": 1,
+    "type": 3,
+    "weight": 0,
+    "att": 1,
+    "def": 0,
+    "str_": 1,
+    "dex": 0,
+    "int_": 0,
+    "luk": 0,
+    "cha": 0,
+    "upgrade_slots": 0
+}

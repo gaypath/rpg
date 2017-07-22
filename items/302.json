@@ -1,0 +1,15 @@
+{
+    "id": 302,
+    "name": "Pantyhose of Protection",
+	"item_type": 1,
+    "type": 3,
+    "weight": 0,
+    "att": 0,
+    "def": 1,
+    "str_": 0,
+    "dex": 0,
+    "int_": 0,
+    "luk": 1,
+    "cha": 0,
+    "upgrade_slots": 0
+}

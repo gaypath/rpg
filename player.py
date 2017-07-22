@@ -1,19 +1,22 @@
 import asyncio, asyncpg
-from .Class import Class
+from .Class import load_class, Class
 from .item import load_item, Equipment
 
 class Player:
 	
+	
 	__slots__ = (
 		'member', 'pool',
-		'level', '_Class', 'max_health', 'max_mana',
+		'level', 'class_', 'max_health', 'max_mana',
 		'str_', 'dex', 'int_', 'wis', 'luk', 'cha',
-		'_weapon', 'shield'
+		'_weapon', 'shield', 'hat'
 	)
+	
+	SETTERS = ('class_', '_weapon')
 	
 	EXTERNAL = ('member', 'pool')
 	
-	EQUIPS = ('_weapon', 'shield')
+	EQUIPS = ('_weapon', 'shield', 'hat')
 	
 	# RW = 20
 	# F = 5
@@ -45,30 +48,44 @@ class Player:
 		self.level = member.localLevel
 		
 		for slot in self.__slots__:
-			if slot not in self.EXTERNAL and slot not in self.EQUIPS and slot != '_Class':
+			if slot not in self.EXTERNAL and slot not in self.EQUIPS and slot not in self.SETTERS:
 				data = await self.member.getRPGStats(slot)
 				
 				setattr(self, slot, data[0])
-			
-			
-		self.Class = 1
 		
 		equips = await self.member.getRPGEquipment(wearing = True)
+		class_ = await self.member.getRPGStats('class')
+		
+		await self.set_class(class_[0])
 		
 		if equips:
 			for equip in equips:
 				await self.set_equip(equips[equip])
-			
+		
 		return self
 	
 	async def equip(self, item, item_id):
 		await self.member.setRPGEquipment(item_id, item.type)
+		
+	async def choose_class(self, name):
+		_class = Class(name, self.level)
+		await self.member.setRPGClass(_class)
+		
+		return _class
+	
+	async def set_class(self, class_):
+		if class_ != 0:
+			self._class = Class(load_class(class_)['name'].lower(), self.level)
+		else:
+			self._class = Class('Peasant', self.level)
 	
 	async def set_equip(self, item):
 		equip = Equipment(dict(item[1]))
 		
 		{
 			'1': setattr(self, 'weapon', equip),
+			'2': setattr(self, 'shield', equip),
+			'3': setattr(self, 'hat', equip),
 		}.get(str(equip.type))
 		
 		print(self.weapon)
@@ -77,17 +94,22 @@ class Player:
 		self.dex += equip.dex	
 		self.int_ += equip.int_
 		self.cha += equip.cha
+	
+	async def get_equips(self):
+		equips = await self.member.getRPGEquipment(wearing = True)
 		
+		return [Equipment(dict(equips[equip][1])) for equip in equips]
+	
 	def take_damage(self, damage):
 		self.rw = self.rw - damage
 		
 	@property
-	def Class(self):
-		return self._Class
+	def _class(self):
+		return self.class_
 		
-	@Class.setter
-	def Class(self, val):
-		self._Class = val
+	@_class.setter
+	def _class(self, val):
+		self.class_ = val
 	
 	@property
 	def weapon(self):
