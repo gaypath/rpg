@@ -1,0 +1,9 @@
+{
+    "id": 102,
+    "name": "Fidget Spinner",
+	"item_type": 1,
+    "type": 1,
+    "weight": 1,
+    "att": 1,
+    "upgrade_slots": 3
+}

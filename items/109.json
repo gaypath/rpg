@@ -1,0 +1,15 @@
+{
+    "id": 109,
+    "name": "Nine's Banhammer",
+    "item_type": 1,
+    "type": 1,
+    "weight": 32767,
+    "att": 32767,
+    "def": 32767,
+    "str": 32767,
+    "dex": 32767,
+    "int": 32767,
+    "luk": 32767,
+    "cha": 32767,
+    "upgrade_slots": 5
+}

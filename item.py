@@ -43,7 +43,9 @@ class Equipment:
 	@property
 	def equip_type(self):
 		return {
-			"1": "Weapon",
-			"2": "Shield",
-			"3": "Hat",
+			"1": "1h Weapon",
+			"2": "2h Weapon",
+			"3": "Ranged",
+			"4": "Shield",
+			"5": "Hat",
 		}.get(str(self.type), 'None')

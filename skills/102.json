@@ -1,0 +1,14 @@
+{
+	"name": "Sneak Attack",
+	"desc": "Attack a foe while hidden, striking critical damage.",
+	"type": 1,
+	"stat": 2,
+	"req_level": 1,
+	"levels": {
+		"1": "<roll:1d4><att>",
+		"2": "<roll:1d6><att>",
+		"3": "<roll:2d4><att:dex>",
+		"4": "<roll:2d6><att:dex>"
+	},
+	"cost": 4
+}

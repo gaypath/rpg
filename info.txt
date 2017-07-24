@@ -1,0 +1,28 @@
+----
+Equips
+----
+
+Types
+--
+1 - One handed Weapon
+2 - Two handed Weapon
+3 - Ranged Weapon
+4 - Shield
+5 - Hat
+6 - Top
+7 - Bottom
+8 - Shoes
+9 - Belt
+10 - Gloves
+11 - Pendant
+
+
+----
+Skills
+----
+
+Types 
+--
+1 - Combat
+2 - Effect
+3 - Passive

@@ -8,7 +8,9 @@
 		"10": 4
 	},
 	"start_ap": 28,
-	"skills": ["hide"],
+	"skills": [
+		101
+	],
 	"modifiers": {
 		"dex": 2,
 		"def_": -1

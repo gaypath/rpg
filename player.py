@@ -7,12 +7,14 @@ class Player:
 	
 	__slots__ = (
 		'member', 'pool',
-		'level', 'class_', 'max_health', 'max_mana',
+		'level', 'class_', 'ability_points',
+		'max_health', 'max_mana', 'health',
+		'_att',
 		'str_', 'dex', 'int_', 'wis', 'luk', 'cha',
 		'_weapon', 'shield', 'hat'
 	)
 	
-	SETTERS = ('class_', '_weapon')
+	SETTERS = ('class_', '_weapon', '_att')
 	
 	EXTERNAL = ('member', 'pool')
 	
@@ -58,6 +60,8 @@ class Player:
 		
 		await self.set_class(class_[0])
 		
+		print(self._class.skills)
+		
 		if equips:
 			for equip in equips:
 				await self.set_equip(equips[equip])
@@ -65,13 +69,19 @@ class Player:
 		return self
 	
 	async def equip(self, item, item_id):
+		if self.weapon and item.type == 4:
+			if self.weapon.equip_type in ['2h Weapon', 'Ranged']:
+				return False
+		
 		await self.member.setRPGEquipment(item_id, item.type)
 		
 	async def choose_class(self, name):
 		_class = Class(name, self.level)
-		await self.member.setRPGClass(_class)
 		
-		return _class
+		if _class.name != 'Peasant':
+			await self.member.setRPGClass(_class)
+			
+			return _class
 	
 	async def set_class(self, class_):
 		if class_ != 0:
@@ -84,8 +94,10 @@ class Player:
 		
 		{
 			'1': setattr(self, 'weapon', equip),
-			'2': setattr(self, 'shield', equip),
-			'3': setattr(self, 'hat', equip),
+			'2': setattr(self, 'weapon', equip),
+			'3': setattr(self, 'weapon', equip),
+			'4': setattr(self, 'shield', equip),
+			'5': setattr(self, 'hat', equip),
 		}.get(str(equip.type))
 		
 		print(self.weapon)

@@ -1,0 +1,7 @@
+{
+	"name": "Hide",
+	"desc": "Attempt to stay undetected by any nearby players or creatures",
+	"type": 2,
+	"stat": 2,
+	"against": "int"
+}

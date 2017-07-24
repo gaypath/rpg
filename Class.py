@@ -1,5 +1,7 @@
 import json
 import random
+import os
+from .skill import Skill
 
 def get_class_id(name):
 	return {
@@ -24,7 +26,26 @@ class Class:
 		else:
 			self.level = level
 			self.name = name
+			
+		self.skills = self.get_skills()
+	
+	@property
+	def skills(self):
+		return self._skills
 		
+	@skills.setter
+	def skills(self, val):
+		self._skills = val
+			
+	def get_skills(self):
+		s = []
+		skills = [x for x in os.listdir('./rpg/skills') if os.path.isfile(os.path.join('./rpg/skills', x)) and x[0] == str(self.id)]
+		for skill in skills:
+			skill_id = skill[0:3]
+			s.append(Skill(skill_id))
+			
+		return s
+	
 	@property
 	def hit_die(self):
 		if self.level == 1:
