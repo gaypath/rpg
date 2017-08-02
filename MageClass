@@ -1,7 +1,7 @@
 {
 	"name": "Mage",
 	"hit_die": [2,4],
-	"mana": 5,
+	"mana": 6,
 	"attack_bonus": {
 		"2": 1,
 		"4": 2,
@@ -11,7 +11,8 @@
 	"skill_points": 2,
 	"start_ap": 6,
 	"skills": [
-		301
+		311,
+		312
 	],
 	"modifiers": {
 		"int": 2,
