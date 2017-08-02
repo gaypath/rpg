@@ -48,4 +48,7 @@ class Equipment:
 			"3": "Ranged",
 			"4": "Shield",
 			"5": "Hat",
+			"6": "Torso",
+			"7": "Bottom",
+			"8": "Shoes"
 		}.get(str(self.type), 'None')

@@ -1,45 +1,24 @@
 import asyncio, asyncpg
+import random
 from .Class import load_class, Class
 from .item import load_item, Equipment
 
 class Player:
 	
-	
 	__slots__ = (
 		'member', 'pool',
-		'level', 'class_', 'ability_points',
-		'max_health', 'max_mana', 'health',
-		'_att',
+		'level', 'class_',
+		'_skills', 'ability_points',
+		'max_health', 'max_mana', 'health', '_att', '_def',
 		'str_', 'dex', 'int_', 'wis', 'luk', 'cha',
 		'_weapon', 'shield', 'hat'
 	)
 	
-	SETTERS = ('class_', '_weapon', '_att')
+	SETTERS = ('class_', '_weapon', '_att', '_skills', '_def')
 	
 	EXTERNAL = ('member', 'pool')
 	
 	EQUIPS = ('_weapon', 'shield', 'hat')
-	
-	# RW = 20
-	# F = 5
-	# ST = 7
-
-	# def __init__(self, member, str_, dex, int_, luk, cha):
-		# self.pool = person.pool
-		# self.member = person
-		
-		# stats = ['str', 'dex', 'int_', 'luk', 'cha', 
-		# self.rw = self.RW
-		# self.str_ = str_
-		# self.dex = dex
-		# self.int_ = int_
-		# self.luk = luk
-		# self.cha = cha
-		# self.att = self.str_ # + self.level
-		# self.weapon = None
-		# self.shield = None
-		# self.fl = math.floor(self.F + (1.2 * dex))
-		# self.st = math.floor(self.ST + (1.2 * int_))
 		
 	@classmethod
 	async def load(cls, member):
@@ -56,11 +35,24 @@ class Player:
 				setattr(self, slot, data[0])
 		
 		equips = await self.member.getRPGEquipment(wearing = True)
-		class_ = await self.member.getRPGStats('class')
+		self.weapon = None
 		
+		class_ = await self.member.getRPGStats('class')
+		self._att = 0
 		await self.set_class(class_[0])
 		
-		print(self._class.skills)
+		skills = await self.member.getRPGSkills()
+		
+		if self._class.name != 'Peasant':
+			s = {str(skill[1]) : skill for skill in skills}
+			cs = []
+			
+			if s:
+				for skill in self._class.class_skills:
+					if self.level >= skill.req_level:
+						cs.append(s[str(skill.id)])
+			
+			self.skills = cs
 		
 		if equips:
 			for equip in equips:
@@ -70,10 +62,13 @@ class Player:
 	
 	async def equip(self, item, item_id):
 		if self.weapon and item.type == 4:
+		
 			if self.weapon.equip_type in ['2h Weapon', 'Ranged']:
 				return False
 		
 		await self.member.setRPGEquipment(item_id, item.type)
+		
+		return True 
 		
 	async def choose_class(self, name):
 		_class = Class(name, self.level)
@@ -86,6 +81,17 @@ class Player:
 	async def set_class(self, class_):
 		if class_ != 0:
 			self._class = Class(load_class(class_)['name'].lower(), self.level)
+			
+			if self._class.modifiers:
+				for modifier in self._class.modifiers:
+					if modifier == 'att':
+						self.att = self._class.modifiers[modifier]
+					elif modifier == 'def_':
+						self.def_ = self._class.modifiers[modifier]
+					else:
+						mod = getattr(self, modifier)
+						setattr(self, modifier, mod + self._class.modifiers[modifier])
+		
 		else:
 			self._class = Class('Peasant', self.level)
 	
@@ -102,6 +108,7 @@ class Player:
 		
 		print(self.weapon)
 		
+		self._att += equip.att
 		self.str_ += equip.str_	
 		self.dex += equip.dex	
 		self.int_ += equip.int_
@@ -112,9 +119,37 @@ class Player:
 		
 		return [Equipment(dict(equips[equip][1])) for equip in equips]
 	
+	def get_stats(self, *args):
+		return [getattr(self, arg) for arg in args]
+	
+	def get_skill_levels(self):
+		return {str(skill[1]): skill[2] for skill in self.skills}
+	
 	def take_damage(self, damage):
 		self.rw = self.rw - damage
-		
+	
+	def raise_skill(self, skill):
+		pass
+	
+	def cast_combat_skill(self, skill, target):
+		if skill.type == 1:
+			skill_level = self.get_skill_levels()[str(skill.id)]
+			pattern = skill.levels[str(skill_level)]
+			
+			roll = pattern['roll'].split('d')
+			damage, modifier = 0, 0
+			
+			for i in range(int(roll[0])):
+				damage += random.randint(1, int(roll[1]))
+			
+			for mod in pattern['mods'].split(':'):
+				if mod == 'att':
+					modifier += self.att
+				else:
+					modifier += getattr(self, mod)
+			
+			return damage + modifier
+	
 	@property
 	def _class(self):
 		return self.class_
@@ -122,6 +157,14 @@ class Player:
 	@_class.setter
 	def _class(self, val):
 		self.class_ = val
+	
+	@property
+	def skills(self):
+		return self._skills
+		
+	@skills.setter
+	def skills(self, val):
+		self._skills = val
 	
 	@property
 	def weapon(self):
@@ -133,4 +176,16 @@ class Player:
 		
 	@property
 	def att(self):
-		pass
+		return self._att + self.str_
+	
+	@att.setter
+	def att(self, val):
+		self._att = val
+		
+	@property
+	def def_(self):
+		return self._def + self.dex
+	
+	@def_.setter
+	def def_(self, val):
+		self._def = val

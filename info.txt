@@ -26,3 +26,11 @@ Types
 1 - Combat
 2 - Effect
 3 - Passive
+
+Stat Types
+--
+1 - str
+2 - dex
+3 - int
+4 - luk
+5 - cha
