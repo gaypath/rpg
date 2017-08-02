@@ -1,7 +1,7 @@
 {
 	"name": "Mage",
 	"hit_die": [2,4],
-	"mana": 6,
+	"mana": 8,
 	"attack_bonus": {
 		"2": 1,
 		"4": 2,
