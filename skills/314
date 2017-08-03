@@ -1,0 +1,16 @@
+{
+	"name": "Frost Nova",
+	"desc": "Unleash a wave of ice around you.",
+	"type": 2,
+	"stat": 3,
+	"req_level": 3,
+	"levels": {
+		"1": "<roll:2d4><att>",
+		"2": "<roll:2d6><att>",
+		"3": "<roll:3d6><att:int>",
+		"4": "<roll:3d8><att:int>"
+	},
+	"cost": 8
+}
+
+/// make effect hit multiple enemies?
