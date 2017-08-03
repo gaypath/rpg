@@ -1,0 +1,16 @@
+{
+	"name": "Ice Blast",
+	"desc": "A beam of frost appears from your palm and fires toward your target.",
+	"type": 1,
+	"stat": 3,
+	"req_level": 2,
+	"levels": {
+		"1": "<roll:1d4><att>",
+		"2": "<roll:1d6><att>",
+		"3": "<roll:2d4><att:int>",
+		"4": "<roll:2d6><att:int>"
+	},
+	"cost": 5
+}
+
+/// Add check to see if attack lands, then if attack lands cause target to have -1 dex
