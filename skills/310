@@ -1,0 +1,14 @@
+{
+	"name": "Firebolt",
+	"desc": "A spark of flames ignites from your hand and flies forward.",
+	"type": 1,
+	"stat": 3,
+	"req_level": 1,
+	"levels": {
+		"1": "<roll:1d8><att>",
+		"2": "<roll:2d8><att>",
+		"3": "<roll:2d8><att:int>",
+		"4": "<roll:2d10><att:int>"
+	},
+	"cost": 5
+}
