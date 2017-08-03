@@ -1,0 +1,16 @@
+{
+	"name": "Two hand Stance",
+	"desc": "Ready your weapon, preparing for your next strike",
+	"type": 2,
+	"stat": 1,
+	"req_level": 1,
+	"levels": {
+		"1": "<roll:1d4><att>",
+		"2": "<roll:1d6><att>",
+		"3": "<roll:2d4><att:dex>",
+		"4": "<roll:2d6><att:dex>"
+	},
+	"cost": 2
+}
+
+/// add 1d4 chance to hit on next attack and 1d4/1d6/1d8/1d10 damage on next attack if it hits
