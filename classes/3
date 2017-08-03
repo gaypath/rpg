@@ -1,0 +1,18 @@
+{
+	"name": "Warrior",
+	"hit_die": [2,8],
+	"attack_bonus": {
+		"2": 1,
+		"4": 2,
+		"7": 3,
+		"10": 4
+	},
+	"start_ap": 6,
+	"skills": [
+		101
+	],
+	"modifiers": {
+		"str": 2,
+		"def_": +2
+	}
+}
